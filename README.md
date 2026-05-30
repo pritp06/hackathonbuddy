@@ -1,3 +1,4 @@
+
 # Hackathon Buddy
 
 Hackathon Buddy is a trust-first hackathon team formation platform designed to help developers, designers, AI engineers, and builders discover compatible teammates, evaluate collaboration potential, and build stronger hackathon teams through structured workflows.
@@ -377,3 +378,4 @@ Planned future improvements include:
 Hackathon Buddy is designed to improve how builders discover teammates, evaluate compatibility, and form successful hackathon teams.
 
 The platform combines trust-driven profiles, structured onboarding, compatibility-focused discovery, and team collaboration workflows into a modern SaaS-style product experience.
+
