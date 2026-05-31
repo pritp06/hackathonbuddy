@@ -26,7 +26,7 @@ const Auth = {
   Returns: Object - The newly created user.
   Side Effects: 
     - Interacts with UserService to store the user in localStorage.
-    - Sets a session in sessionStorage.
+    - Sets a session in localStorage.
   */
   signup(payload) {
     const user = UserService.createUser(payload);
@@ -42,7 +42,7 @@ const Auth = {
   Returns: Object - The authenticated user.
   Side Effects: 
     - Reads from localStorage (via UserService).
-    - Sets a session in sessionStorage.
+    - Sets a session in localStorage.
   */
   login(email, password) {
     // Locate a user matching both email and password for rudimentary auth
@@ -57,33 +57,33 @@ const Auth = {
   Parameters: None
   Returns: undefined
   Side Effects: 
-    - Removes the session from sessionStorage.
+    - Removes the session from localStorage.
     - Updates window.location.hash to redirect.
   */
   logout() {
-    Storage.sessionRemove("session");
+    Storage.remove("session");
     location.hash = "#/";
   },
 
   /*
-  Purpose: Establishes a user session in sessionStorage.
+  Purpose: Establishes a user session in localStorage.
   Parameters: userId (String) - The ID of the user to log in.
   Returns: undefined
   Side Effects: 
-    - Stores session data in sessionStorage.
+    - Stores session data in localStorage.
   */
   setSession(userId) {
-    Storage.sessionSet("session", { userId, startedAt: new Date().toISOString() });
+    Storage.set("session", { userId, startedAt: new Date().toISOString() });
   },
 
   /*
   Purpose: Retrieves the currently logged-in user from the active session.
   Parameters: None
   Returns: Object|null - The user object, or null if no active session.
-  Side Effects: Reads from sessionStorage.
+  Side Effects: Reads from localStorage.
   */
   currentUser() {
-    const session = Storage.sessionGet("session");
+    const session = Storage.get("session");
     return session?.userId ? UserService.getUser(session.userId) : null;
   },
 
