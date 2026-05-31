@@ -1,3 +1,20 @@
+/*
+File: canvas.js
+
+Purpose:
+Provides the interactive background particle animation for the public landing page.
+Handles rendering, physics (mouse interaction), resize observers, and accessibility 
+preferences (e.g. prefers-reduced-motion).
+
+Dependencies:
+None
+
+Used By:
+- pages.js (Landing page setup)
+
+====================================================
+*/
+
 class InteractiveBackground {
   constructor() {
     this.canvas = null;
@@ -7,22 +24,34 @@ class InteractiveBackground {
     this.cursor = { x: -1000, y: -1000 };
     this.bounds = { width: 0, height: 0 };
     this.animationId = null;
+    
+    // Accessibility check: Do not show moving particles if user prefers reduced motion
     this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.isMobile = window.innerWidth < 768;
     this.isSmallMobile = window.innerWidth < 480;
 
+    // Bind methods to maintain `this` context when used as event listeners
     this.onResize = this.onResize.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
     this.loop = this.loop.bind(this);
     
+    // Performance and debugging tracking
     this.frameCount = 0;
     this.lastFpsTime = 0;
     this.fps = 0;
     this.rafCount = 0;
+    
+    // Global debug object to monitor canvas health
     window.__HB_DEBUG__ = { particles: 0, running: false, fps: 0, mouseX: 0, mouseY: 0, rafCount: 0, listeners: 0 };
   }
 
+  /*
+  Purpose: Bootstraps the canvas rendering engine and sets up event listeners.
+  Parameters: None
+  Returns: undefined
+  Side Effects: Modifies global debug object, binds listeners to `window`.
+  */
   init() {
     console.log("InteractiveBackground initialized");
     this.canvas = document.getElementById("hero-canvas");
@@ -45,6 +74,12 @@ class InteractiveBackground {
     this.loop();
   }
 
+  /*
+  Purpose: Tears down the canvas, stops the animation loop, and removes listeners to prevent memory leaks.
+  Parameters: None
+  Returns: undefined
+  Side Effects: Mutates global debug object, removes listeners from `window`.
+  */
   destroy() {
     if (this.animationId) cancelAnimationFrame(this.animationId);
     window.removeEventListener("resize", this.onResize);
@@ -60,6 +95,12 @@ class InteractiveBackground {
     window.__HB_DEBUG__.particles = 0;
   }
 
+  /*
+  Purpose: Adjusts the internal bounds and resolution of the canvas when the window resizes.
+  Parameters: None
+  Returns: undefined
+  Side Effects: Resets particles based on new viewport dimensions.
+  */
   onResize() {
     if (!this.canvas) return;
     const parent = this.canvas.parentElement;
@@ -73,6 +114,12 @@ class InteractiveBackground {
     this.initParticles();
   }
 
+  /*
+  Purpose: Tracks the user's mouse position relative to the canvas.
+  Parameters: e (MouseEvent)
+  Returns: undefined
+  Side Effects: Updates internal `this.mouse` coordinates.
+  */
   onMouseMove(e) {
     if (this.reducedMotion) return;
     const rect = this.canvas.getBoundingClientRect();
@@ -80,13 +127,26 @@ class InteractiveBackground {
     this.mouse.y = e.clientY - rect.top;
   }
 
+  /*
+  Purpose: Hides the interactive glow when the cursor leaves the window.
+  Parameters: None
+  Returns: undefined
+  Side Effects: Updates internal `this.mouse` coordinates.
+  */
   onMouseLeave() {
     this.mouse.x = -1000;
     this.mouse.y = -1000;
   }
 
+  /*
+  Purpose: Generates the initial layout of particles across the canvas.
+  Parameters: None
+  Returns: undefined
+  Side Effects: Populates `this.particles`.
+  */
   initParticles() {
     this.particles = [];
+    // Do not generate particles for reduced motion or mobile devices
     if (this.reducedMotion || this.isMobile) return;
 
     const count = window.innerWidth >= 1024 ? 30 : 15;
@@ -107,11 +167,21 @@ class InteractiveBackground {
     }
   }
 
+  /*
+  Purpose: The primary rendering loop executed every frame via requestAnimationFrame.
+  Parameters: time (Number) - High-resolution timestamp provided by rAF.
+  Returns: undefined
+  Side Effects: 
+    - Clears and redraws the canvas.
+    - Updates particle physics and positions.
+    - Updates FPS counters.
+  */
   loop(time) {
     if (!this.ctx) return;
     this.animationId = requestAnimationFrame(this.loop);
     this.rafCount++;
 
+    // Track FPS over 1-second intervals
     this.frameCount++;
     if (time - this.lastFpsTime >= 1000) {
       this.fps = this.frameCount;
@@ -119,6 +189,7 @@ class InteractiveBackground {
       this.lastFpsTime = time;
     }
     
+    // Expose debug metrics
     window.__HB_DEBUG__.fps = this.fps;
     window.__HB_DEBUG__.mouseX = this.mouse.x;
     window.__HB_DEBUG__.mouseY = this.mouse.y;
@@ -129,6 +200,7 @@ class InteractiveBackground {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
     this.ctx.clearRect(0, 0, this.bounds.width, this.bounds.height);
 
+    // Fallback static glow for reduced motion users
     if (this.reducedMotion) {
       const glow = this.ctx.createRadialGradient(this.bounds.width / 2, this.bounds.height / 2, 0, this.bounds.width / 2, this.bounds.height / 2, this.bounds.width * 0.8);
       const glowColor = isDark ? "96, 165, 250" : "37, 99, 235";
@@ -139,9 +211,11 @@ class InteractiveBackground {
       return;
     }
 
+    // Ease cursor position towards mouse position for smooth trailing effect
     this.cursor.x += (this.mouse.x - this.cursor.x) * 0.1;
     this.cursor.y += (this.mouse.y - this.cursor.y) * 0.1;
 
+    // Draw the interactive glow around the cursor
     if (this.cursor.x > -500) {
       const glowRadius = this.isMobile ? 250 : window.innerWidth >= 1024 ? 500 : 350;
       const glowOpacity = window.innerWidth >= 1024 ? 0.12 : window.innerWidth >= 768 ? 0.08 : 0.05;
@@ -153,6 +227,7 @@ class InteractiveBackground {
       this.ctx.fillRect(0, 0, this.bounds.width, this.bounds.height);
     }
 
+    // Do not calculate/draw particles on mobile
     if (this.isMobile) return;
 
     const darkColors = ["96, 165, 250", "192, 132, 252", "34, 211, 238"];
@@ -162,13 +237,16 @@ class InteractiveBackground {
     const interactionRadius = 150;
     const maxDisplacement = 12;
 
+    // Calculate physics and draw each particle
     for (const p of this.particles) {
+      // Calculate continuous drifting motion using sine waves
       const driftX = Math.sin(time * 0.0005 + p.phase) * 8;
       const driftY = Math.cos(time * 0.0007 + p.phase) * 8;
       
       let targetX = p.baseX + driftX;
       let targetY = p.baseY + driftY;
 
+      // Apply repulsion force if the mouse is near the particle
       if (this.mouse.x > -500) {
         const dx = this.mouse.x - p.baseX;
         const dy = this.mouse.y - p.baseY;
@@ -176,15 +254,17 @@ class InteractiveBackground {
 
         if (dist < interactionRadius) {
           const force = 1 - (dist / interactionRadius);
-          const easedForce = force * force;
+          const easedForce = force * force; // Non-linear falloff
           targetX -= (dx / dist) * easedForce * maxDisplacement;
           targetY -= (dy / dist) * easedForce * maxDisplacement;
         }
       }
 
+      // Smoothly interpolate current position toward target position
       p.x += (targetX - p.x) * 0.04;
       p.y += (targetY - p.y) * 0.04;
 
+      // Render the particle
       this.ctx.beginPath();
       this.ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
       this.ctx.fillStyle = `rgba(${colors[p.colorIndex]}, ${p.opacity})`;
