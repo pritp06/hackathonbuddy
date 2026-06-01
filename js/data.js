@@ -1,27 +1,22 @@
-/*
-File: data.js
 
-Purpose:
-Maintains the initial seed data and global constants (like available roles, skills, and experience levels). 
-It also handles populating the application state when the user first visits the platform.
 
-Dependencies:
-- storage.js
-
-Used By:
-- app.js (Initializes data on startup)
-- pages.js (Populates form options like dropdowns)
-- ui.js
-
-====================================================
-*/
+/**
+ * 1. Purpose
+ *    - Data configuration service hosting seed databases, schema options, and initial database setup logic.
+ * 2. Responsibilities
+ *    - Maintains array collections of supported user skills, builder roles, experience tags, and availability settings.
+ *    - Seeds standard mock records (`seedUsers`, `seedTeams`, basic activity items) into localStorage.
+ *    - Blocks double-initialization checks via a dedicated status flag (`initialized` key) in storage.
+ * 3. Dependencies
+ *    - js/storage.js (Wrapper verifying and writing records in localStorage)
+ * 4. Important Functions
+ *    - `initialize()`: Checks initialization status, writing mock user/team tables and setting `initialized` to true if empty.
+ * 5. Data Flow
+ *    - App load -> invokes `Data.initialize()` -> check `hb_initialized` in Storage -> write seed models if missing.
+ */
 
 import Storage from "./storage.js";
-
-// Global constant array defining all selectable skills across the platform
 const skills = ["JavaScript", "React", "Python", "Django", "Flutter", "Figma", "Node.js", "TensorFlow", "Swift", "Product Strategy", "UX Research", "TypeScript"];
-
-// Seed data: Represents mock users to pre-populate the platform for demo purposes
 const seedUsers = [
   {
     id: "user_ava",
@@ -104,8 +99,6 @@ const seedUsers = [
     savedTeams: []
   }
 ];
-
-// Seed data: Represents mock teams to pre-populate the platform for demo purposes
 const seedTeams = [
   {
     id: "team_orbit",
@@ -132,20 +125,13 @@ const seedTeams = [
 ];
 
 const Data = {
-  // Global options for profile forms
   roles: ["Frontend Developer", "Backend Developer", "Full Stack Developer", "UI/UX Designer", "AI/ML Engineer", "Mobile Developer", "Product Manager"],
   experience: ["Beginner", "Intermediate", "Advanced"],
   availability: ["Looking For Team", "Available", "Team Already Formed", "Not Available"],
   skills,
   
-  /*
-  Purpose: Initializes the application with mock data if it hasn't been set up yet.
-  Parameters: None
-  Returns: undefined
-  Side Effects: Writes users, teams, requests, and activity logs to localStorage on first visit.
-  */
+  
   initialize() {
-    // Check if the application is already initialized to avoid overwriting data on reload.
     if (!Storage.get("initialized")) {
       Storage.set("users", seedUsers);
       Storage.set("teams", seedTeams);

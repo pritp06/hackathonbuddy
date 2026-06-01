@@ -1,428 +1,89 @@
 /*
-==================================================
-Hackathon Buddy Stylesheet
-
-Purpose:
-Controls the entire visual presentation of the Hackathon Buddy platform, 
-including marketing pages, dashboard, components, and interactive elements.
-
-Used By:
-- All HTML/JS files in the platform
-
-Contains:
-- Theme Variables
-- Layout System
-- Navigation
-- Buttons
-- Forms
-- Cards
-- Dashboard
-- Responsive Rules
-- Animations
-
-Last Documented:
-Auto Generated Documentation Pass
-==================================================
+  1. Purpose
+    - Global styling sheet containing layout, typography, custom UI components, and the theme token system.
+  2. Responsibilities
+    - Declares custom CSS variables/tokens for colors, backgrounds, borders, shadows, and radii.
+     - Controls UI styles for the App shell layout, sidebar navigation, responsive topbars, cards, and data presentation.
+     - Manages dark mode and light mode visual states via CSS variables bound to `data-theme` selectors.
+     - Implements media query breakpoints for mobile responsiveness (collapsing sidebars, re-gridding showcases).
+  3. Dependencies
+     - Typography: Inter/Plus Jakarta Sans web fonts or fallback system font stacks.
+  4. Important Functions
+     - N/A (Declarative stylesheet rules)
+  5. Data Flow
+     - Statically parsed by the browser, styling all elements based on HTML structure and classes.
+     - Dynamic theme switches: when JS changes the `data-theme` attribute on the document root, CSS variables immediately toggle value mappings, updating all computed styles.
 */
 
-/* ==================================================
-  Theme System (Light Mode & Default Tokens)
-
-  Purpose:
-  Defines all design tokens for colors, spacing, 
-  shadows, and typography. Supports light mode out of the box.
-
-  Used On:
-  - Platform-wide
-   ================================================== */
 :root,
-[data-theme="light"] {
-  /*
-  Color Scheme Hint.
-  
-  Used for:
-  - Instructing the browser to use light UI components (scrollbars, etc.)
-  */
-  color-scheme: light;
-
-  /*
-  Primary Background.
-  
-  Used for:
-  - Main body backgrounds
-  */
-  --bg: #f7f8fb;
-
-  /*
-  Secondary Background.
-  
-  Used for:
-  - Subtly differentiated sections
-  - Hover states on items
-  */
-  --bg-soft: #eef1f6;
-
-  /*
-  Primary Panel Color.
-  
-  Used for:
-  - Cards
-  - Modals
-  - Standard elevated surfaces
-  */
-  --panel: #ffffff;
-
-  /*
-  Secondary Panel Color.
-  
-  Used for:
-  - Hovered cards
-  - Highlighted surfaces
-  */
-  --panel-raised: #ffffff;
-
-  /*
-  Primary Text Color.
-  
-  Used for:
-  - Standard body copy
-  */
-  --ink: #111827;
-
-  /*
-  Strong Text Color.
-  
-  Used for:
-  - Headings (h1-h6)
-  - Emphasized text
-  */
-  --ink-strong: #030712;
-
-  /*
-  Muted Text Color.
-  
-  Used for:
-  - Secondary descriptions
-  - Captions
-  */
-  --muted: #667085;
-
-  /*
-  Strong Muted Text Color.
-  
-  Used for:
-  - Subheadings
-  - Slightly emphasized secondary text
-  */
-  --muted-strong: #475467;
-
-  /*
-  Primary Border Line.
-  
-  Used for:
-  - Card borders
-  - Dividers
-  */
-  --line: #e4e7ec;
-
-  /*
-  Strong Border Line.
-  
-  Used for:
-  - Hovered borders
-  - High-contrast dividers
-  */
-  --line-strong: #cfd4dc;
-
-  /*
-  Primary Brand Color.
-  
-  Used for:
-  - Primary buttons
-  - Active navigation
-  - Links
-  */
-  --brand: #2563eb;
-
-  /*
-  Strong Brand Color.
-  
-  Used for:
-  - Hovered brand elements
-  - Accents
-  */
-  --brand-strong: #1d4ed8;
-
-  /*
-  Soft Brand Color.
-  
-  Used for:
-  - Badges
-  - Subtle brand backgrounds
-  */
-  --brand-soft: #eff6ff;
-
-  /*
-  Accent Color (Teal).
-  
-  Used for:
-  - Success badges
-  - Highlights
-  */
-  --accent: #0f766e;
-
-  /*
-  Soft Accent Color.
-  
-  Used for:
-  - Backgrounds for accent badges
-  */
-  --accent-soft: #ecfdf5;
-
-  /*
-  Warning Color.
-  
-  Used for:
-  - Missing roles
-  - Alerts
-  */
-  --warning: #c2410c;
-
-  /*
-  Blue Link Color.
-  
-  Used for:
-  - Specific text links
-  */
-  --blue: #1d4ed8;
-
-  /*
-  Success Color.
-  
-  Used for:
-  - Verification badges
-  - Success states
-  */
-  --success: #15803d;
-
-  /*
-  Danger Color.
-  
-  Used for:
-  - Destructive buttons
-  - Error toasts
-  */
-  --danger: #b42318;
-
-  /*
-  Soft Danger Color.
-  
-  Used for:
-  - Backgrounds for destructive panels
-  */
-  --danger-soft: #fff1f0;
-
-  /*
-  Small Shadow.
-  
-  Used for:
-  - Buttons
-  - Small cards
-  */
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
-
-  /*
-  Medium Shadow.
-  
-  Used for:
-  - Hovered cards
-  - Floating panels
-  */
-  --shadow: 0 16px 40px rgba(16, 24, 40, 0.08);
-
-  /*
-  Large Shadow.
-  
-  Used for:
-  - Modals
-  - Auth cards
-  - Popovers
-  */
-  --shadow-lg: 0 30px 80px rgba(16, 24, 40, 0.12);
-
-  /*
-  Small Border Radius.
-  
-  Used for:
-  - Buttons
-  - Inputs
-  */
-  --radius-sm: 8px;
-
-  /*
-  Medium Border Radius.
-  
-  Used for:
-  - Standard cards
-  - Panels
-  */
-  --radius: 12px;
-
-  /*
-  Large Border Radius.
-  
-  Used for:
-  - Large panels
-  - Feature cards
-  */
-  --radius-lg: 16px;
-
-  /*
-  Extra Large Border Radius.
-  
-  Used for:
-  - Auth cards
-  - Hero panels
-  */
-  --radius-xl: 20px;
-
-  /*
-  Sidebar Background Color.
-  
-  Used for:
-  - Main application sidebar
-  */
-  --sidebar: #0b1220;
-
-  /*
-  Sidebar Muted Text Color.
-  
-  Used for:
-  - Inactive sidebar links
-  */
-  --sidebar-muted: #9aa4b2;
-
-  /*
-  Focus Ring Shadow.
-  
-  Used for:
-  - Accessibility focus states on interactive elements
-  */
-  --focus: 0 0 0 4px rgba(37, 99, 235, 0.18);
-
-  /*
-  Primary Typography Stack.
-  
-  Used for:
-  - Entire application text
-  */
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-/* ==================================================
-  Theme System (Dark Mode)
-
-  Purpose:
-  Overrides design tokens for dark mode environments.
-
-  Used On:
-  - Platform-wide when data-theme="dark" is active
-   ================================================== */
 [data-theme="dark"] {
-  /* Dark mode color scheme hint */
   color-scheme: dark;
-  /* Dark mode primary background */
-  --bg: #090d14;
-  /* Dark mode secondary background */
-  --bg-soft: #101622;
-  /* Dark mode panel background */
-  --panel: #111827;
-  /* Dark mode raised panel background */
-  --panel-raised: #151e2d;
-  /* Dark mode primary text */
-  --ink: #e5e7eb;
-  /* Dark mode strong text */
-  --ink-strong: #ffffff;
-  /* Dark mode muted text */
-  --muted: #9ca3af;
-  /* Dark mode strong muted text */
-  --muted-strong: #cbd5e1;
-  /* Dark mode border line */
-  --line: #253044;
-  /* Dark mode strong border line */
-  --line-strong: #354156;
-  /* Dark mode primary brand */
-  --brand: #60a5fa;
-  /* Dark mode strong brand */
-  --brand-strong: #93c5fd;
-  /* Dark mode soft brand */
-  --brand-soft: #12233d;
-  /* Dark mode accent */
-  --accent: #2dd4bf;
-  /* Dark mode soft accent */
-  --accent-soft: #102c2c;
-  /* Dark mode warning */
-  --warning: #fb923c;
-  /* Dark mode link blue */
-  --blue: #93c5fd;
-  /* Dark mode success */
-  --success: #86efac;
-  /* Dark mode danger */
-  --danger: #f87171;
-  /* Dark mode soft danger */
-  --danger-soft: #35191c;
-  /* Dark mode small shadow */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  /* Dark mode medium shadow */
-  --shadow: 0 20px 50px rgba(0, 0, 0, 0.36);
-  /* Dark mode large shadow */
-  --shadow-lg: 0 35px 90px rgba(0, 0, 0, 0.48);
-  /* Dark mode sidebar background */
-  --sidebar: #070b12;
-  /* Dark mode sidebar muted text */
-  --sidebar-muted: #8f9aae;
-  /* Dark mode focus ring */
-  --focus: 0 0 0 4px rgba(96, 165, 250, 0.24);
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --elevated: #171717;
+  --soft: #1d1d1d;
+  --border: #242424;
+  --border-strong: #303030;
+  --text: #ffffff;
+  --text-soft: #d7d7d7;
+  --muted: #b3b3b3;
+  --muted-low: #767676;
+  --brand: #ffffff;
+  --brand-text: #111111;
+  --success: #a7f3d0;
+  --warning: #f2b36d;
+  --danger: #ff7a6e;
+  --danger-soft: #271513;
+  --focus: 0 0 0 3px rgba(255, 255, 255, 0.22);
+  --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+  --radius: 10px;
+  --radius-sm: 7px;
+  font-family: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* ==================================================
-  Layout System & Base Resets
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --elevated: #f1f0eb;
+  --soft: #ebe9e2;
+  --border: #dedbd2;
+  --border-strong: #cac5ba;
+  --text: #111111;
+  --text-soft: #333333;
+  --muted: #656565;
+  --muted-low: #888888;
+  --brand: #111111;
+  --brand-text: #ffffff;
+  --success: #0f6b48;
+  --warning: #8d4d12;
+  --danger: #b42318;
+  --danger-soft: #ffe8e4;
+  --focus: 0 0 0 3px rgba(17, 17, 17, 0.16);
+  --shadow: 0 18px 48px rgba(28, 25, 20, 0.1);
+}
 
-  Purpose:
-  Standardizes box sizing, body margins, scrolling,
-  and baseline typographical hierarchy across browsers.
-
-  Used On:
-  - All HTML elements
-   ================================================== */
 * {
   box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
   background: var(--bg);
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--brand) 10%, transparent), transparent 32rem),
-    var(--bg);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   font-size: 16px;
-  line-height: 1.5;
-  transition: background-color 200ms ease, color 200ms ease;
+  line-height: 1.55;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-a:hover {
-  color: var(--brand);
 }
 
 button,
@@ -448,11 +109,6 @@ summary {
   -webkit-tap-highlight-color: transparent;
 }
 
-img {
-  max-width: 100%;
-  display: block;
-}
-
 h1,
 h2,
 h3,
@@ -461,123 +117,65 @@ p {
   margin-top: 0;
 }
 
-/*
-Typography Hierarchy
-
-Purpose:
-Defines sizes, weights, and colors for all standard headings.
-*/
 h1 {
-  color: var(--ink-strong);
-  font-size: 48px;
-  line-height: 1.04;
-  letter-spacing: 0;
-  font-weight: 800;
-}
-
-h2 {
-  color: var(--ink-strong);
-  font-size: 36px;
-  line-height: 1.12;
+  margin-bottom: 16px;
+  color: var(--text);
+  font-size: clamp(42px, 6.2vw, 72px);
+  line-height: 0.98;
   letter-spacing: 0;
   font-weight: 760;
 }
 
-h3 {
-  color: var(--ink-strong);
-  font-size: 28px;
-  line-height: 1.18;
+h2 {
+  margin-bottom: 12px;
+  color: var(--text);
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.05;
   letter-spacing: 0;
-  font-weight: 720;
+  font-weight: 730;
 }
 
-h4 {
-  color: var(--ink-strong);
-  font-size: 22px;
-  line-height: 1.25;
-  letter-spacing: 0;
+h3 {
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 24px;
+  line-height: 1.18;
+  font-weight: 720;
 }
 
 p {
   color: var(--muted);
 }
 
-/*
-Accessibility Global
-
-Purpose:
-Provides visual focus indicator for keyboard users.
-*/
 :focus-visible {
   outline: none;
   box-shadow: var(--focus);
 }
 
-/* ==================================================
-  Brand Components
-
-  Purpose:
-  Styles the logo, application icon, and brand text.
-
-  Used On:
-  - Sidebar
-  - Marketing Navigation
-  - Authentication Cards
-   ================================================== */
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 850;
-  font-size: 20px;
-  color: var(--ink-strong);
-  letter-spacing: -0.02em;
-}
-
-.brand.compact {
-  font-size: 16px;
-}
-
-.brand.compact span {
-  max-width: 150px;
-  line-height: 1.15;
-  color: #fff;
+  gap: 12px;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 760;
 }
 
 .brand-logo .app-icon {
-  width: 32px;
-  height: 32px;
-  color: var(--brand);
-  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  color: var(--text);
+  flex: 0 0 auto;
 }
 
-.brand-logo.compact .app-icon {
-  width: 24px;
-  height: 24px;
+.brand.compact {
+  font-size: 15px;
 }
 
-.brand-logo .logo-text {
-  background: linear-gradient(135deg, var(--ink-strong) 20%, var(--muted-strong));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
+.logo-text {
   white-space: nowrap;
-  line-height: normal;
 }
 
-/* ==================================================
-  Buttons
-
-  Purpose:
-  Controls styling for all actionable button elements, 
-  including primary, secondary, ghost, and icon buttons.
-
-  Used On:
-  - Forms
-  - Dialogs
-  - Navigation
-  - Page Actions
-   ================================================== */
 .button,
 button.button,
 .ghost {
@@ -585,58 +183,78 @@ button.button,
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border-radius: 8px;
-  padding: 0 16px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0.01em;
-  min-height: 40px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
-  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 740;
+  line-height: 1;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
 .button,
 button.button {
-  background: var(--ink-strong);
-  color: var(--panel);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  color: #111111;
+  border-color: #ffffff;
 }
 
 .button:hover,
-.ghost:hover {
-  transform: translateY(-1px);
+button.button:hover {
+  background: #e8e8e8;
+  border-color: #e8e8e8;
+  color: #111111;
 }
 
-.button:hover {
-  background: color-mix(in srgb, var(--ink-strong) 80%, #000);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+[data-theme="light"] .button,
+[data-theme="light"] button.button {
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
+}
+
+[data-theme="light"] .button:hover,
+[data-theme="light"] button.button:hover {
+  background: #2a2a2a;
+  border-color: #2a2a2a;
+  color: #ffffff;
 }
 
 .button.secondary,
 .ghost {
-  background: var(--panel);
-  color: var(--ink);
-  border-color: var(--line);
-  box-shadow: var(--shadow-sm);
+  background: transparent;
+  color: var(--text);
+  border-color: #303030;
+}
+
+[data-theme="light"] .button.secondary,
+[data-theme="light"] .ghost {
+  border-color: var(--border-strong);
 }
 
 .button.secondary:hover,
 .ghost:hover {
-  color: var(--ink-strong);
-  border-color: var(--line-strong);
-  background: var(--panel-raised);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  border-color: #454545;
+}
+
+[data-theme="light"] .button.secondary:hover,
+[data-theme="light"] .ghost:hover {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .button.large {
-  min-height: 48px;
-  padding: 0 20px;
+  min-height: 50px;
+  padding-inline: 22px;
   font-size: 15px;
 }
 
 .button.small {
   min-height: 36px;
-  padding: 0 12px;
+  padding-inline: 13px;
 }
 
 .button.full,
@@ -646,171 +264,95 @@ button.button {
 
 .button.danger {
   background: var(--danger);
+  color: #111111;
   border-color: var(--danger);
 }
 
-.icon-button {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--panel);
-  color: var(--ink);
-  width: 44px;
-  height: 44px;
-  cursor: pointer;
-}
-
-/*
-Theme Toggle Component
-
-Purpose:
-Handles the visual state and transition of the sun/moon icon 
-used for toggling light/dark mode.
-*/
+.icon-button,
 .theme-toggle {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid transparent;
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  display: inline-grid;
-  place-items: center;
-  transition: background 200ms, color 200ms;
-  flex-shrink: 0;
 }
 
+.icon-button:hover,
 .theme-toggle:hover {
-  background: var(--bg-soft);
-  color: var(--ink-strong);
-}
-
-.theme-toggle:focus-visible {
-  outline: 2px solid var(--brand);
-  outline-offset: 2px;
+  border-color: var(--border-strong);
+  color: var(--text);
 }
 
 .theme-toggle svg {
   width: 18px;
   height: 18px;
-  grid-area: 1/1;
-  transition: opacity 200ms, transform 200ms;
+  grid-area: 1 / 1;
 }
 
-.theme-toggle:not(.is-dark) .icon-sun {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.theme-toggle:not(.is-dark) .icon-moon {
-  opacity: 0;
-  transform: scale(0.5) rotate(-30deg);
-}
-
-.theme-toggle.is-dark .icon-sun {
-  opacity: 0;
-  transform: scale(0.5) rotate(30deg);
-}
-
+.theme-toggle:not(.is-dark) .icon-sun,
 .theme-toggle.is-dark .icon-moon {
   opacity: 1;
-  transform: scale(1);
 }
 
-/* ==================================================
-  Utility Classes & Badges
+.theme-toggle:not(.is-dark) .icon-moon,
+.theme-toggle.is-dark .icon-sun {
+  opacity: 0;
+}
 
-  Purpose:
-  Small reusable classes for displaying tags, statuses, 
-  and small hints.
+.section-kicker,
+.eyebrow {
+  display: inline-flex;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
 
-  Used On:
-  - Profile Cards
-  - Team Lists
-  - Request Rows
-   ================================================== */
 .badge,
-.status-pill {
+.status-pill,
+.availability,
+.stage {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: var(--brand-soft);
-  color: var(--brand-strong);
-  font-size: 14px;
-  font-weight: 750;
+  background: var(--soft);
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 760;
   white-space: nowrap;
 }
 
-.badge.success,
-.status-pill {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.hint,
-small {
-  font-size: 14px;
-  color: var(--muted);
-}
-
-/* ==================================================
-  Landing Page / Hero Section
-
-  Purpose:
-  Styles the marketing landing page including the 
-  navigation, interactive background, and feature grids.
-
-  Used On:
-  - Landing Page (#/)
-   ================================================== */
-.hero-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
+.role-gap {
+  color: var(--warning);
+  font-weight: 780;
 }
 
 .marketing {
-  position: relative;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
-  overflow: hidden;
+  background: var(--bg);
 }
 
-/* Stacking Contexts for Marketing */
-.marketing-nav,
-.hero,
-.features,
-.how-it-works,
-.footer {
-  position: relative;
-  z-index: 1;
-}
-
-/*
-Navigation System (Marketing)
-
-Purpose:
-Controls top navigation, links, and CTA buttons on the public site.
-*/
 .marketing-nav {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 40;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 32px;
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 40%, transparent);
-  background: color-mix(in srgb, var(--bg) 75%, transparent);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  gap: 18px;
+  padding: 18px 32px;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
 }
 
 .marketing-nav .nav-left,
@@ -828,1316 +370,895 @@ Controls top navigation, links, and CTA buttons on the public site.
 
 .marketing-nav .nav-center {
   display: flex;
-  align-items: center;
-  gap: 32px;
-  flex: 1;
   justify-content: center;
-  font-weight: 600;
-  color: var(--muted-strong);
-}
-
-.marketing-nav .nav-center a {
-  transition: color 200ms ease;
+  gap: 30px;
+  flex: 1;
+  color: var(--muted);
   font-size: 14px;
+  font-weight: 720;
 }
 
-.marketing-nav .nav-center a:hover {
-  color: var(--ink-strong);
+.marketing-nav a:hover {
+  color: var(--text);
 }
 
 .login-btn {
-  font-weight: 500;
-  font-size: 14px;
-  color: var(--muted-strong);
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: color 200ms, background 200ms;
-}
-
-.login-btn:hover {
-  color: var(--ink-strong);
-  background: var(--bg-soft);
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-weight: 720;
 }
 
 .mobile-menu-toggle {
   display: none;
 }
 
-/*
-Hero Layout
-
-Purpose:
-Creates the split layout for the primary value prop and the interactive preview.
-*/
 .hero {
-  min-height: calc(100vh - 76px);
+  min-height: auto;
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  align-items: center;
-  gap: 64px;
-  padding: 48px 8vw 80px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: "";
-  position: absolute;
-  top: -20%;
-  left: -10%;
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, color-mix(in srgb, var(--brand) 15%, transparent) 0%, transparent 70%);
-  z-index: -1;
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+  align-items: start;
+  gap: 72px;
+  padding: 86px 8vw 72px;
 }
 
 .hero-copy {
-  max-width: 600px;
-}
-
-.eyebrow {
-  display: inline-block;
-  padding: 6px 12px;
-  background: color-mix(in srgb, var(--brand) 15%, transparent);
-  color: var(--brand);
-  font-weight: 700;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 13px;
-  margin-bottom: 24px;
-  border: 1px solid color-mix(in srgb, var(--brand) 30%, transparent);
-}
-
-.hero-copy h1 {
-  font-size: 56px;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  margin-bottom: 24px;
+  max-width: 760px;
 }
 
 .hero-copy p:not(.eyebrow) {
+  max-width: 650px;
+  margin-bottom: 34px;
+  color: var(--text-soft);
   font-size: 20px;
-  line-height: 1.6;
-  color: var(--muted-strong);
-  margin-bottom: 40px;
-  max-width: 540px;
+  line-height: 1.55;
 }
 
 .hero-actions,
 .actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-/*
-Interactive Preview Component
-
-Purpose:
-Renders the faux UI window shown in the hero section to demonstrate features.
-*/
-.interactive-preview {
-  position: relative;
-  width: 100%;
-  border-radius: var(--radius-xl);
-  background: var(--panel);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--brand) 10%, transparent);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
-  transition: transform 300ms ease;
-}
-
-.interactive-preview:hover {
-  transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
-}
-
-.preview-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 16px;
-  background: var(--bg-soft);
-  border-bottom: 1px solid var(--line);
-}
-
-.preview-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.preview-dots span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--line-strong);
-}
-
-.preview-dots span:nth-child(1) {
-  background: #ff5f56;
-}
-
-.preview-dots span:nth-child(2) {
-  background: #ffbd2e;
-}
-
-.preview-dots span:nth-child(3) {
-  background: #27c93f;
-}
-
-.preview-title {
-  font-family: monospace;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.preview-body {
-  padding: 32px;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  position: relative;
-}
-
-.preview-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow-sm);
-}
-
-.main-card {
-  position: relative;
-  z-index: 1;
-}
-
-.card-top-preview {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.score-ring {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: conic-gradient(var(--accent) 84%, var(--bg-soft) 0);
+.live-profiles {
   display: grid;
-  place-items: center;
-  position: relative;
-}
-
-.score-ring::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  background: var(--panel);
-  border-radius: 50%;
-}
-
-.score-ring strong {
-  position: relative;
-  z-index: 2;
-  font-size: 18px;
-  color: var(--ink-strong);
-}
-
-.card-titles h4 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.card-titles p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.signal-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-.signal {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--ink);
-  font-weight: 500;
-  padding: 10px 14px;
-  border-radius: var(--radius-sm);
-  background: var(--bg-soft);
-  border: 1px solid transparent;
-}
-
-.signal.active {
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-}
-
-.signal.active svg {
-  color: var(--accent);
-}
-
-.signal.pending {
-  background: var(--bg-soft);
-  color: var(--muted-strong);
-}
-
-.signal svg {
-  width: 16px;
-  height: 16px;
-}
-
-/*
-Float Animation
-
-Purpose:
-Creates a gentle hovering effect for auxiliary elements in the hero graphic.
-*/
-.float-card {
-  position: absolute;
-  bottom: -20px;
-  right: -20px;
-  width: 300px;
-  z-index: 2;
-  box-shadow: var(--shadow);
-  border-color: color-mix(in srgb, var(--line) 80%, transparent);
-  background: color-mix(in srgb, var(--panel) 90%, transparent);
-  backdrop-filter: blur(12px);
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.builder-row {
+.live-profiles-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
 }
 
-.builder-info {
-  flex: 1;
+.live-profiles-head strong {
+  color: var(--text);
 }
 
-.builder-info strong {
-  display: block;
-  font-size: 14px;
-  color: var(--ink-strong);
-}
-
-.builder-info span {
-  font-size: 12px;
-  color: var(--accent);
-  font-weight: 600;
-}
-
-/* ==================================================
-  Layout System (Marketing Sections)
-
-  Purpose:
-  Handles standard section padding, grids, and bands
-  for the public site.
-   ================================================== */
-.band,
 .section,
-.split,
 .final-cta {
-  padding: 96px 8vw;
+  padding: 88px 8vw;
+}
+
+.featured-section {
+  border-top: 1px solid var(--border);
+}
+
+.featured-section.alternate {
+  background: var(--surface);
 }
 
 .section-header {
-  margin-bottom: 56px;
-  max-width: 600px;
+  max-width: 760px;
+  margin-bottom: 34px;
 }
 
 .section-header.center {
-  margin: 0 auto 56px;
+  margin-inline: auto;
   text-align: center;
-}
-
-.section-header h2 {
-  margin-bottom: 16px;
-  font-size: 40px;
-  letter-spacing: -0.01em;
 }
 
 .section-header p {
+  margin: 0;
+  color: var(--muted);
   font-size: 18px;
-  color: var(--muted-strong);
-  margin: 0;
 }
 
-.band {
-  text-align: center;
-  background: linear-gradient(180deg, var(--sidebar), color-mix(in srgb, var(--sidebar) 90%, #000));
-  color: #fff;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.band h2,
-.band p {
-  color: #fff;
-}
-
-.band.problem {
-  text-align: left;
-  background: var(--bg-soft);
-  color: var(--ink);
-  border: none;
-  padding: 64px 8vw;
-}
-
-.band.problem h2 {
-  color: var(--ink-strong);
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
-.band.problem p {
-  font-size: 20px;
-  color: var(--muted-strong);
-  max-width: 800px;
-  margin: 0;
-}
-
-.split {
+.builder-showcase,
+.team-showcase {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
 
-/*
-Grid Layout
-
-Purpose:
-Creates responsive dashboard grids for content, metrics, and cards.
-
-Behavior:
-Adjusts via media queries for smaller screens.
-*/
-.grid {
-  display: grid;
-  gap: 24px;
-  min-width: 0;
-}
-
-.grid.two {
+.team-showcase {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.grid.three,
-.steps {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  display: grid;
-  gap: 32px;
+.how-section {
+  border-top: 1px solid var(--border);
 }
 
-/* Steps Component */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
 .steps article {
-  position: relative;
-  padding-top: 48px;
-  background: transparent;
-  border: none;
-  box-shadow: none;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-strong);
 }
 
 .steps b {
-  display: inline-grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--brand) 15%, transparent);
-  color: var(--brand);
-  font-size: 20px;
-  font-weight: 800;
-  margin-bottom: 24px;
+  color: var(--muted-low);
+  font-size: 13px;
 }
 
 .steps h3 {
-  font-size: 22px;
-  margin-bottom: 12px;
+  margin-top: 18px;
 }
 
 .steps p {
-  color: var(--muted-strong);
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* ==================================================
-  Cards & Panels
-
-  Purpose:
-  The foundational elevated surface element used
-  for features, builders, teams, and generic wrappers.
-
-  Used On:
-  - Dashboard
-  - Discovery Pages
-  - Marketing
-   ================================================== */
-.card,
-blockquote,
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: 32px;
-  transition: transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 250ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 250ms ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  border-color: var(--line-strong);
-  box-shadow: var(--shadow);
-}
-
-/* Feature Cards */
-.feature-card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 40px 32px;
-}
-
-.feature-card h3 {
-  font-size: 20px;
   margin: 0;
 }
 
-.feature-card p {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--muted);
-}
-
-.feature-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--brand) 10%, transparent);
-  display: grid;
-  place-items: center;
-  color: var(--brand);
-  margin-bottom: 8px;
-}
-
-.feature-icon svg {
-  width: 24px;
-  height: 24px;
-}
-
-/* Testimonial Blockquotes */
-blockquote {
-  margin: 0;
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--ink-strong);
-  font-weight: 500;
-  font-style: italic;
-}
-
-blockquote span {
-  display: block;
-  margin-top: 24px;
-  color: var(--muted);
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* FAQ Accordion Component */
-.faq-list {
-  max-width: 720px;
-  margin: 0 auto;
-  display: grid;
-  gap: 16px;
-}
-
-.faq details {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  background: var(--panel);
-  box-shadow: var(--shadow-sm);
-  transition: border-color 200ms ease;
-}
-
-.faq details:hover {
-  border-color: var(--line-strong);
-}
-
-.faq summary {
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--ink-strong);
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.faq summary::-webkit-details-marker {
-  display: none;
-}
-
-.faq summary::after {
-  content: "+";
-  font-size: 24px;
-  color: var(--muted);
-  transition: transform 200ms ease;
-}
-
-.faq details[open] summary::after {
-  content: "−";
-}
-
-.faq details p {
-  margin: 16px 0 0 0;
-  color: var(--muted-strong);
-  line-height: 1.6;
-}
-
-/* Final CTA Section */
 .final-cta {
   text-align: center;
-  background: linear-gradient(180deg, var(--bg-soft), var(--panel));
-  position: relative;
-  overflow: hidden;
-}
-
-.final-cta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, color-mix(in srgb, var(--brand) 10%, transparent) 0%, transparent 60%);
-  pointer-events: none;
+  border-top: 1px solid var(--border);
 }
 
 .final-cta h2 {
-  font-size: 48px;
-  margin-bottom: 32px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  z-index: 1;
+  max-width: 760px;
+  margin-inline: auto;
+  margin-bottom: 24px;
 }
 
-.final-cta .button {
-  position: relative;
-  z-index: 1;
-}
-
-/*
-Footer Component
-
-Purpose:
-Bottom of public marketing pages.
-*/
 footer {
   display: flex;
-  gap: 24px;
   align-items: center;
   justify-content: space-between;
-  padding: 48px 8vw;
-  border-top: 1px solid var(--line);
-  background: var(--panel);
-}
-
-footer span {
-  font-weight: 700;
-  color: var(--ink-strong);
+  gap: 24px;
+  padding: 32px 8vw;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
 }
 
 .footer-links {
   display: flex;
-  gap: 24px;
-  align-items: center;
-  font-weight: 600;
-  color: var(--muted);
+  gap: 22px;
+  font-weight: 720;
 }
 
-.footer-links a:hover {
-  color: var(--brand);
-}
-
-/* ==================================================
-  Forms & Authentication
-
-  Purpose:
-  Styles the Login, Signup, and Onboarding forms, 
-  including inputs, textareas, and form containers.
-
-  Used On:
-  - Login / Signup
-  - Onboarding Wizard
-  - Settings pages
-   ================================================== */
 .auth-page,
 .onboarding {
   min-height: 100vh;
   display: grid;
-  place-items: center;
-  padding: 24px;
-  background:
-    radial-gradient(circle at top right, color-mix(in srgb, var(--brand) 14%, transparent), transparent 30rem),
-    var(--bg);
+  grid-template-columns: minmax(300px, 520px) minmax(320px, 420px);
+  justify-content: center;
+  align-items: center;
+  gap: 72px;
+  padding: 40px;
+  background: var(--bg);
 }
 
-/*
-Auth Card
+.auth-context {
+  max-width: 540px;
+}
 
-Purpose:
-Provides the authentication container used on
-Login, Signup, and Onboarding screens.
+.auth-context .brand {
+  margin-bottom: 56px;
+}
 
-Features:
-- Centered layout
-- Responsive width
-- Elevated surface
-- Theme support
-*/
+.auth-context h1 {
+  font-size: clamp(42px, 4.8vw, 64px);
+}
+
+.auth-context p {
+  color: var(--text-soft);
+  font-size: 18px;
+}
+
+.auth-proof {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.auth-proof span {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 760;
+}
+
 .auth-card,
 .onboarding-card {
-  width: min(100%, 480px);
-  background: var(--panel);
-  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--brand) 5%, transparent);
-  padding: 40px;
-}
-
-.auth-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 32px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 24px;
+  width: 100%;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 .auth-title {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
-.auth-title h1 {
-  font-size: 28px;
-  letter-spacing: -0.02em;
+.auth-title h2,
+.onboarding-card h1 {
   margin-bottom: 8px;
+  font-size: 30px;
+  line-height: 1.1;
 }
 
-.auth-title p {
-  color: var(--muted-strong);
+.auth-title p,
+.auth-footer {
   margin: 0;
-  font-size: 15px;
+  color: var(--muted);
 }
 
 .auth-footer {
+  margin-top: 20px;
   text-align: center;
-  margin-top: 24px;
-  color: var(--muted-strong);
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .auth-footer a {
-  color: var(--brand);
-  font-weight: 600;
+  color: var(--text);
+  font-weight: 800;
 }
 
-/*
-Field Component
-
-Purpose:
-Wrapper for input elements providing a label and consistent spacing.
-*/
 .field {
   display: grid;
-  gap: 6px;
-  margin-bottom: 20px;
-  font-weight: 650;
-  color: var(--ink-strong);
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .field span {
-  font-size: 14px;
-  color: var(--muted-strong);
+  color: var(--text-soft);
+  font-size: 13px;
+  font-weight: 760;
 }
 
 input,
 select,
 textarea {
   width: 100%;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
   padding: 10px 12px;
-  background: var(--panel-raised);
-  color: var(--ink);
-  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
-}
-
-input:hover,
-select:hover,
-textarea:hover {
-  border-color: var(--line-strong);
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
 }
 
 input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--brand);
+  border-color: var(--text);
   box-shadow: var(--focus);
 }
 
-input:user-invalid,
-select:user-invalid,
-textarea:user-invalid {
-  border-color: color-mix(in srgb, var(--danger) 72%, var(--line));
-}
-
 textarea {
-  min-height: 104px;
+  min-height: 110px;
   resize: vertical;
 }
 
-input[type="file"] {
-  padding: 10px;
+.hint,
+small {
+  color: var(--muted);
 }
 
 .check {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   min-height: 44px;
-  color: var(--ink);
 }
 
 .check input {
   width: 18px;
   min-height: 18px;
-  accent-color: var(--brand);
 }
 
-/* Onboarding Step Tracking */
-.step-head {
+.step-head,
+.upload-status,
+.profile-preview {
   display: grid;
-  gap: 12px;
-  margin-bottom: 24px;
-  color: var(--muted);
-  font-weight: 750;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
 .upload-status,
 .profile-preview {
-  border: 1px dashed var(--line-strong);
-  border-radius: var(--radius);
-  padding: 16px;
+  padding: 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
   color: var(--muted);
-  margin-bottom: 16px;
-  background: var(--bg-soft);
 }
 
-/* ==================================================
-  Dashboard & Sidebar
-
-  Purpose:
-  The main layout wrapper for authenticated users, 
-  providing the persistent sidebar and topbar navigation.
-
-  Used On:
-  - Dashboard
-  - All internal tools
-   ================================================== */
 .app-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 248px minmax(0, 1fr);
 }
 
-/*
-Sidebar Component
-
-Purpose:
-Persistent left-hand navigation.
-*/
 .sidebar {
   position: sticky;
   top: 0;
   height: 100vh;
-  background: linear-gradient(180deg, var(--sidebar), color-mix(in srgb, var(--sidebar) 82%, #000));
-  color: #fff;
-  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.sidebar .brand img {
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  gap: 30px;
+  padding: 24px 18px;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
 }
 
 .side-nav {
   display: grid;
-  gap: 8px;
-  flex: 1;
+  gap: 2px;
   align-content: start;
-  grid-auto-rows: min-content;
+  flex: 1;
 }
 
 .side-nav a {
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 44px;
-  padding: 0 12px;
-  color: var(--sidebar-muted);
-  border-radius: var(--radius);
-  font-weight: 700;
-  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+  min-height: 42px;
+  padding: 0 10px;
+  color: var(--muted);
+  border-left: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 720;
 }
 
 .side-nav a span {
   width: 22px;
   display: inline-grid;
   place-items: center;
-  color: inherit;
 }
 
-.side-nav a.active,
+.side-nav a.active {
+  color: var(--text);
+  border-left-color: var(--text);
+  background: transparent;
+}
+
 .side-nav a:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transform: translateX(2px);
+  color: var(--text);
 }
 
-.sidebar .ghost {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.14);
+.logout-btn {
+  justify-content: flex-start;
 }
 
 .workspace {
   min-width: 0;
-  padding: 24px;
-  max-width: 1560px;
+  max-width: 1500px;
   width: 100%;
+  padding: 26px 32px 64px;
 }
 
-/*
-Topbar Component
-
-Purpose:
-Sticky header inside the workspace displaying user context 
-and quick actions.
-*/
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 32px;
-  background: color-mix(in srgb, var(--bg) 84%, transparent);
   position: sticky;
   top: 0;
-  z-index: 4;
-  padding: 16px 0 24px;
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 40%, transparent);
-}
-
-.topbar-left {
+  z-index: 20;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
+  margin-bottom: 34px;
+  padding: 8px 0 20px;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+}
+
+.topbar-left,
+.topbar-actions,
+.identity,
+.card-top,
+.row,
+.between {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   min-width: 0;
 }
 
+.topbar-left,
+.card-top,
+.row,
+.between {
+  justify-content: space-between;
+}
+
 .topbar-context {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: 2px;
 }
 
 .context-title {
-  color: var(--ink-strong);
-  font-size: 18px;
-  font-weight: 750;
-  line-height: 1.3;
-  margin: 0;
+  color: var(--text);
+  font-weight: 780;
 }
 
 .context-label {
   color: var(--muted);
   font-size: 13px;
-  font-weight: 500;
-}
-
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 
 .mobile-menu {
   display: none;
 }
 
-/*
-Page Heading
-
-Purpose:
-Standard title and description block for internal pages.
-*/
 .page-heading {
   display: flex;
-  align-items: end;
   justify-content: space-between;
-  gap: 24px;
-  margin: 8px 0 24px;
+  align-items: end;
+  gap: 22px;
+  margin: 0 0 24px;
 }
 
 .page-heading h1 {
-  margin-bottom: 8px;
+  font-size: clamp(40px, 4.2vw, 56px);
 }
 
 .page-heading p {
-  max-width: 720px;
-  margin-bottom: 0;
-  color: var(--muted-strong);
-}
-
-.grid .page-heading {
-  margin-top: 0;
+  max-width: 760px;
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 17px;
 }
 
 .grid .page-heading h1 {
+  font-size: 26px;
+}
+
+.stack,
+.grid {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.grid.two,
+.workspace-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.decision-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) 320px;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.decision-panel,
+.pulse-panel,
+.activity-panel,
+.profile-card,
+.profile-note,
+.panel,
+.empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.decision-panel {
+  padding: 30px;
+}
+
+.decision-panel h2 {
+  max-width: 780px;
+}
+
+.decision-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.decision-list a {
+  display: grid;
+  gap: 4px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+.decision-list strong {
+  color: var(--text);
+  font-size: 18px;
+}
+
+.decision-list span {
+  color: var(--muted);
+}
+
+.pulse-panel {
+  padding: 24px;
+  align-self: stretch;
+}
+
+.pulse-panel span {
+  color: var(--muted);
+  font-weight: 760;
+}
+
+.pulse-panel strong {
+  display: block;
+  margin: 24px 0 8px;
+  color: var(--text);
+  font-size: 72px;
+  line-height: 0.9;
+}
+
+.pulse-panel p {
+  margin: 0;
+}
+
+.activity-panel {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 32px;
+  margin-top: 28px;
+  padding: 24px;
+}
+
+.section-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.section-row h2 {
+  margin: 0;
   font-size: 28px;
 }
 
-/*
-Metrics Component
-
-Purpose:
-Displays Key Performance Indicators on the dashboard.
-*/
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.metric {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-}
-
-.metric span {
+.section-row a {
   color: var(--muted);
   font-size: 14px;
-  font-weight: 720;
+  font-weight: 760;
 }
 
-.metric strong {
-  display: block;
-  color: var(--ink-strong);
-  font-size: 32px;
-  margin: 8px 0;
-  line-height: 1;
-}
-
-/* Utility layout blocks */
-.stack {
-  display: grid;
-  gap: 16px;
-  min-width: 0;
-}
-
-.card-top,
-.row,
-.between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-
-.identity {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-/* ==================================================
-  Builder & Team Cards
-
-  Purpose:
-  Specialized card layouts for displaying user profiles 
-  and team details in the discovery sections.
-
-  Used On:
-  - Builders Page
-  - Teams Page
-  - Saved Pages
-   ================================================== */
 .builder-card,
 .team-card {
   display: grid;
   gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
-.builder-card h3,
-.team-card h3,
-.row h3 {
-  font-size: 22px;
-  margin-bottom: 4px;
+.builder-card.featured,
+.team-card.featured {
+  min-height: 100%;
 }
 
-.builder-card p,
-.team-card p,
-.row p {
-  margin-bottom: 0;
+.builder-card.compact {
+  padding: 16px;
+  background: var(--elevated);
 }
 
-/*
-Tags Component
+.builder-card.compact .actions,
+.builder-card.compact .trust-links a em,
+.builder-card.compact .tags {
+  display: none;
+}
 
-Purpose:
-Displays an inline list of skills or technology stack.
-*/
-.tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.builder-identity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.builder-identity .availability {
+  grid-column: 1 / -1;
+  width: max-content;
+}
+
+.builder-identity h3,
+.team-head h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.builder-identity p,
+.builder-evidence p,
+.team-head p {
   margin: 0;
 }
 
-.tags span {
-  background: var(--brand-soft);
-  color: var(--brand-strong);
-  min-height: 30px;
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 0 10px;
-  font-size: 14px;
-  font-weight: 750;
-}
-
-/*
-Progress Component
-
-Purpose:
-Visual indicator for compatibility and readiness scores.
-*/
-.progress {
-  height: 10px;
-  border-radius: 999px;
-  background: var(--bg-soft);
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--line) 65%, transparent);
-}
-
-.progress span {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--brand));
-  border-radius: inherit;
-}
-
-/* Score displays */
-.score {
+.builder-evidence {
   display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 4px 10px;
+  gap: 5px;
+  padding-top: 4px;
 }
 
-.score strong {
-  color: var(--ink-strong);
-  font-size: 28px;
-  line-height: 1;
+.evidence-label {
+  color: var(--muted-low);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-.score span {
+.builder-evidence strong {
+  color: var(--text);
+  font-size: 16px;
+}
+
+.trust-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.trust-links a {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.trust-links a:hover {
+  border-color: var(--border-strong);
+}
+
+.trust-links span {
+  color: var(--muted-low);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.trust-links strong {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.trust-links em {
+  min-width: 0;
+  overflow: hidden;
   color: var(--muted);
-  font-weight: 700;
+  font-size: 12px;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.score .progress {
-  grid-column: 1 / -1;
+.team-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: start;
 }
 
 .readiness {
   display: grid;
   justify-items: end;
-  color: var(--muted);
+  gap: 2px;
 }
 
 .readiness strong {
-  color: var(--ink-strong);
-  font-size: 30px;
+  color: var(--text);
+  font-size: 34px;
   line-height: 1;
 }
 
 .readiness span {
-  font-size: 13px;
-  font-weight: 750;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
-.role-gap {
-  color: var(--warning);
-  font-weight: 760;
+.team-meta {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 7px 12px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.team-meta span,
+.compact-list dt {
+  color: var(--muted-low);
+  font-size: 13px;
+  font-weight: 780;
+}
+
+.team-meta strong,
+.compact-list dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--text-soft);
+  overflow-wrap: anywhere;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.avatar.small {
+  width: 44px;
+  height: 44px;
+}
+
+.avatar.tiny {
+  width: 30px;
+  height: 30px;
+  font-size: 11px;
 }
 
 .member-strip {
   display: flex;
   align-items: center;
-  min-height: 32px;
+  min-height: 30px;
 }
 
 .member-strip .avatar+.avatar {
-  margin-left: -8px;
+  margin-left: -7px;
 }
 
-/*
-Avatar Component
-
-Purpose:
-Renders user initials in a circular badge.
-*/
-.avatar {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-soft), var(--brand-soft));
-  color: var(--brand-strong);
-  border: 1px solid var(--line);
-  font-size: 24px;
-  font-weight: 900;
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
 }
 
-.avatar.small {
-  width: 48px;
-  height: 48px;
-  font-size: 16px;
+.tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 9px;
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 740;
 }
 
-.avatar.tiny {
-  width: 32px;
-  height: 32px;
-  font-size: 12px;
-  border: 2px solid var(--panel);
-}
-
-/* Description list component for concise key/value pairs */
 .compact-list {
   display: grid;
-  grid-template-columns: 132px minmax(0, 1fr);
-  gap: 10px 12px;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 9px 12px;
   margin: 0;
-}
-
-.compact-list dt {
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.compact-list dd {
-  margin: 0;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  color: var(--ink);
 }
 
 .compact-list a {
-  color: var(--blue);
-  font-weight: 650;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* ==================================================
-  Internal Pages (Builders, Team Details)
+.progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--soft);
+  border: 1px solid var(--border);
+}
 
-  Purpose:
-  Styles filters, detailed profile layouts, and 
-  activity feeds.
-   ================================================== */
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--text);
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.metric {
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.metric span {
+  color: var(--muted);
+}
+
+.metric strong {
+  display: block;
+  color: var(--text);
+  font-size: 32px;
+}
+
 .filters {
   display: grid;
-  grid-template-columns: repeat(6, minmax(120px, 1fr));
-  gap: 12px;
+  grid-template-columns: 1.2fr repeat(5, minmax(120px, 1fr));
+  gap: 10px;
   align-items: end;
-  margin-bottom: 24px;
-  padding: 16px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  margin-bottom: 18px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 .filters .field {
   margin: 0;
 }
 
-/* Profile View */
 .profile-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 24px;
+  gap: 18px;
 }
 
-.profile-hero {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  margin-bottom: 24px;
+.profile-card,
+.profile-note,
+.panel,
+.empty {
+  padding: 24px;
+}
+
+.featured-section,
+.how-section,
+.final-cta,
+footer,
+.workspace-columns>div,
+.activity-panel,
+.builder-card,
+.team-card,
+.decision-panel,
+.pulse-panel,
+.metric,
+.panel,
+.empty,
+.feed,
+.profile-card,
+.profile-note {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 420px;
 }
 
 .profile-card {
   display: grid;
-  gap: 24px;
+  gap: 22px;
+}
+
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .section-block {
@@ -2145,51 +1266,22 @@ Renders user initials in a circular badge.
   gap: 12px;
 }
 
-.section-block h3 {
-  font-size: 22px;
-  margin-bottom: 0;
-}
-
 .quick-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-.next-action {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 24px;
-  background: linear-gradient(135deg, var(--panel), var(--brand-soft));
-}
-
-.next-action h2 {
-  margin-bottom: 8px;
-}
-
-.next-action p {
-  margin-bottom: 0;
-}
-
-/* Feed / Notification row */
 .feed {
   display: grid;
-  gap: 4px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-}
-
-.feed:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-  margin-bottom: 0;
+  gap: 3px;
+  margin: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
 }
 
 .feed b {
-  color: var(--ink-strong);
+  color: var(--text);
 }
 
 .feed span {
@@ -2201,17 +1293,6 @@ Renders user initials in a circular badge.
   display: grid;
 }
 
-/* Empty State component */
-.empty {
-  text-align: center;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 48px 24px;
-  box-shadow: var(--shadow-sm);
-}
-
-/* Settings Navigation */
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -2220,122 +1301,64 @@ Renders user initials in a circular badge.
 }
 
 .tabs a {
-  min-height: 44px;
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  border-radius: var(--radius);
-  padding: 0 14px;
-  font-weight: 750;
-  color: var(--muted-strong);
+  min-height: 40px;
+  padding: 0 13px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-weight: 740;
 }
 
 .tabs a.active {
-  background: var(--brand);
-  color: #fff;
-  border-color: var(--brand);
+  color: var(--text);
+  border-color: var(--border-strong);
 }
 
 .danger {
-  border-color: color-mix(in srgb, var(--danger) 40%, var(--line));
   background: var(--danger-soft);
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
 }
 
 .unread {
-  border-left: 4px solid var(--brand);
+  border-left: 2px solid var(--text);
 }
 
 .request-row p {
   display: flex;
-  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-.request-detail {
-  display: grid;
-  gap: 24px;
-  max-width: 860px;
-}
-
-.hero-score strong {
-  font-size: 40px;
-}
-
-/* ==================================================
-  Toasts & Notifications
-
-  Purpose:
-  Provides the global positioning and animation 
-  for transient alert messages.
-   ================================================== */
 #toast-root {
   position: fixed;
   right: 16px;
   bottom: 16px;
-  z-index: 20;
+  z-index: 100;
   display: grid;
   gap: 10px;
   width: min(360px, calc(100vw - 32px));
 }
 
 .toast {
-  padding: 14px 16px;
-  background: var(--ink-strong);
-  color: var(--panel);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-lg);
-  animation: toast-in 180ms ease;
+  padding: 13px 15px;
+  color: var(--brand-text);
+  background: var(--brand);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
 }
 
 .toast.error {
+  color: #fff;
   background: var(--danger);
-  color: #fff;
 }
 
-.toast.success {
-  background: var(--accent);
-  color: #fff;
+.empty-inline {
+  margin: 0;
+  color: var(--muted);
 }
 
-/*
-Toast Animation
-
-Purpose:
-Creates smooth slide-up entrance transition for toasts.
-Performance:
-Uses transform and opacity only for GPU acceleration.
-*/
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ==================================================
-  Responsive Media Queries & Animations
-
-  Purpose:
-  Handles progressive enhancement and responsive
-  down-scaling for smaller viewports.
-   ================================================== */
-
-/*
-Reduced Motion Breakpoint
-
-Range:
-Media feature check
-
-Changes:
-- Disables all transitions and animations instantly.
-*/
 @media (prefers-reduced-motion: reduce) {
 
   *,
@@ -2347,95 +1370,44 @@ Changes:
   }
 }
 
-/*
-Large Desktop Breakpoint
-
-Range:
-1200px and below
-
-Changes:
-- Condenses filter grids and hero gaps.
-*/
 @media (max-width: 1200px) {
-  .filters {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  .hero,
+  .auth-page,
+  .onboarding {
+    gap: 40px;
   }
 
-  .hero {
-    gap: 40px;
+  .builder-showcase,
+  .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/*
-Tablet / Laptop Breakpoint
-
-Range:
-1060px and below
-
-Changes:
-- Collapses dual-column layouts into single column.
-- Centers hero text and disables 3D transform on preview.
-*/
-@media (max-width: 1060px) {
+@media (max-width: 980px) {
 
   .hero,
-  .split,
+  .auth-page,
+  .onboarding,
+  .decision-board,
+  .workspace-columns,
   .grid.two,
-  .profile-layout {
+  .profile-layout,
+  .activity-panel,
+  .team-showcase {
     grid-template-columns: 1fr;
   }
 
-  .metrics {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .hero {
+    align-items: start;
   }
 
-  .profile-layout {
-    gap: 16px;
-  }
-
-  .hero-copy {
-    max-width: 100%;
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  .hero-actions {
-    justify-content: center;
-  }
-
-  .interactive-preview {
-    transform: none;
-  }
-
-  .interactive-preview:hover {
-    transform: none;
+  .auth-context .brand {
+    margin-bottom: 32px;
   }
 }
 
-/*
-Mobile / Small Tablet Breakpoint
-
-Range:
-860px and below
-
-Changes:
-- Changes app shell to hide sidebar behind a hamburger menu.
-- Reduces typography sizes.
-- Restructures marketing nav for mobile.
-*/
 @media (max-width: 860px) {
-  h1 {
-    font-size: 44px;
-  }
-
-  h2 {
-    font-size: 32px;
-  }
-
-  h3 {
-    font-size: 24px;
-  }
-
   .app-shell {
     grid-template-columns: 1fr;
   }
@@ -2443,11 +1415,11 @@ Changes:
   .sidebar {
     position: fixed;
     inset: 0 auto 0 0;
-    width: min(320px, 86vw);
+    z-index: 60;
+    width: min(300px, 86vw);
     transform: translateX(-105%);
-    transition: transform 200ms ease;
-    z-index: 100;
-    box-shadow: var(--shadow-lg);
+    transition: transform 180ms ease;
+    box-shadow: var(--shadow);
   }
 
   .sidebar.open {
@@ -2456,15 +1428,10 @@ Changes:
 
   .mobile-menu {
     display: inline-grid;
-    place-items: center;
   }
 
   .workspace {
-    padding: 16px;
-  }
-
-  .topbar {
-    align-items: center;
+    padding: 18px 14px 48px;
   }
 
   .topbar-actions .button {
@@ -2476,33 +1443,23 @@ Changes:
     flex-direction: column;
   }
 
-  .filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .grid.three,
-  .steps {
-    grid-template-columns: 1fr;
-  }
-
   .marketing-nav {
     flex-wrap: wrap;
-    padding: 16px 20px;
+    padding: 14px 18px;
   }
 
   .marketing-nav .nav-center {
     display: none;
     width: 100%;
     order: 3;
-    padding-top: 16px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
+    padding-top: 12px;
   }
 
   .marketing-nav.menu-open .nav-center {
     display: flex;
-    animation: fade-in 200ms ease;
   }
 
   .marketing-nav .nav-right {
@@ -2514,174 +1471,122 @@ Changes:
     display: none;
   }
 
-  .mobile-menu-toggle {
-    display: inline-flex;
-  }
-
-  .marketing-nav.menu-open {
-    background: var(--panel);
-    border-bottom: 1px solid var(--line);
-  }
-
   .marketing-nav.menu-open .login-btn,
   .marketing-nav.menu-open .cta-btn {
     display: inline-flex;
     width: 100%;
     justify-content: center;
-    margin-top: 8px;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-grid;
   }
 }
 
-/*
-Mobile Breakpoint
-
-Range:
-760px and below
-
-Changes:
-- Adjusts all structural padding for tight spaces.
-- Collapses filter arrays and metric cards to 1 column.
-*/
 @media (max-width: 760px) {
-  .hero {
-    padding: 40px 20px 64px;
-  }
 
-  .hero-copy h1 {
-    font-size: 40px;
-  }
-
-  .hero-copy p:not(.eyebrow) {
-    font-size: 18px;
-  }
-
-  .band,
+  .hero,
   .section,
-  .split,
   .final-cta {
-    padding: 64px 20px;
+    padding: 48px 20px;
   }
 
-  .float-card {
-    display: none;
+  .hero {
+    min-height: auto;
   }
 
-  footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-  }
-
-  .footer-links {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
+  .builder-showcase,
+  .steps,
   .metrics,
   .filters {
     grid-template-columns: 1fr;
   }
 
-  .auth-card,
-  .onboarding-card {
-    padding: 24px;
+  .auth-page,
+  .onboarding {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 24px 14px;
   }
 
-  .card-top,
-  .row,
-  .next-action {
-    align-items: flex-start;
-    flex-direction: column;
+  .auth-context {
+    max-width: none;
+  }
+
+  .auth-context h1 {
+    font-size: 38px;
+  }
+
+  .auth-card,
+  .onboarding-card,
+  .decision-panel,
+  .pulse-panel,
+  .activity-panel,
+  .profile-card,
+  .profile-note,
+  .panel,
+  .empty {
+    padding: 18px;
+  }
+
+  .trust-links {
+    grid-template-columns: 1fr;
   }
 
   .actions {
     width: 100%;
+    align-items: stretch;
     flex-direction: column;
   }
 
   .actions .button,
   .actions .ghost {
     width: 100%;
-    flex: 1;
   }
 
-  .compact-list {
+  .compact-list,
+  .team-meta {
     grid-template-columns: 1fr;
   }
 
-  .profile-hero {
+  footer {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .signal-grid {
-    grid-template-columns: 1fr;
   }
 }
 
-/*
-Small Mobile Breakpoint
-
-Range:
-480px and below
-
-Changes:
-- Fine-tunes padding, headings, and tab bars for very small screens.
-*/
 @media (max-width: 480px) {
-  h1 {
-    font-size: 34px;
+  body {
+    font-size: 15px;
+  }
+
+  h1,
+  .page-heading h1 {
+    font-size: 36px;
   }
 
   h2 {
-    font-size: 28px;
+    font-size: 30px;
   }
 
-  h3 {
-    font-size: 22px;
+  .hero,
+  .section,
+  .final-cta {
+    padding-inline: 14px;
   }
 
-  .workspace {
-    padding: 12px;
-  }
-
-  .card,
-  .panel,
-  .metric {
-    padding: 20px;
-    border-radius: var(--radius);
-  }
-
-  .auth-page,
-  .onboarding {
+  .builder-card,
+  .team-card {
     padding: 16px;
-  }
-
-  .auth-card,
-  .onboarding-card {
-    padding: 20px;
-  }
-
-  .auth-head {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
   .topbar {
     gap: 10px;
   }
 
-  .topbar>div:not(.topbar-actions) {
-    min-width: 0;
-  }
-
-  .topbar-actions .theme-toggle b {
-    display: none;
-  }
-
-  .identity {
+  .profile-hero {
     align-items: flex-start;
+    flex-direction: column;
   }
 
   .tabs {
@@ -2692,26 +1597,5 @@ Changes:
 
   .tabs a {
     white-space: nowrap;
-  }
-}
-
-/*
-Fade In Animation
-
-Purpose:
-Creates smooth entrance transition.
-
-Performance:
-Uses transform and opacity only for GPU acceleration.
-*/
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

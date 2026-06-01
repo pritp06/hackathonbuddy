@@ -1,12 +1,24 @@
 <!doctype html>
+<!--
+  1. Purpose
+     - Single Page Application (SPA) container and shell markup anchor.
+  2. Responsibilities
+     - Configures the document viewport, character encoding, and SEO metadata.
+     - Provides the mount node (#app) for the client-side router and the toast notification node (#toast-root).
+     - Boots the application execution by including the main entry JavaScript module (js/app.js).
+  3. Dependencies
+     - Styling: css/styles.css
+     - Entry Module: js/app.js
+     - Assets: assets/logo.png
+  4. Important Functions
+     - N/A (Declarative structure)
+  5. Data Flow
+     - Browser loads index.html, initializes the base DOM tree, and fetches styles/scripts.
+     - Upon loading, js/app.js bootstraps UI components and dynamically renders pages inside the #app division.
+-->
 <html lang="en">
   <head>
-    <!--
-    File: index.html
-    Purpose: 
-    The main entry point for the Hackathon Buddy Single Page Application.
-    Provides the basic DOM structure, metadata, and loads styles/scripts.
-    -->
+    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hackathon Buddy</title>
@@ -18,12 +30,12 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <!-- Toast notifications root element -->
+    
     <div id="toast-root" aria-live="polite"></div>
-    <!-- Main application root element where UI is mounted -->
+    
     <div id="app"></div>
 
-    <!-- Application entry script -->
+    
     <script type="module" src="js/app.js"></script>
   </body>
 </html>

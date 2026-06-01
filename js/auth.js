@@ -1,109 +1,71 @@
-/*
-File: auth.js
 
-Purpose:
-Handles the authentication flow including signup, login, session persistence,
-and logout. Acts as the gatekeeper for protected routes by verifying the current session.
 
-Dependencies:
-- userService.js
-- storage.js
-
-Used By:
-- pages.js
-- router.js
-
-====================================================
-*/
+/**
+ * 1. Purpose
+ *    - Session authentication coordinator managing authentication logic and state checks.
+ * 2. Responsibilities
+ *    - Executes registration workflows using payload templates.
+ *    - Authenticates user credentials against local mock user entries.
+ *    - Generates user login sessions, and disposes of sessions upon logout commands.
+ *    - Exposes current session authentication state to components.
+ *    - Enforces page-access session requirements on restricted UI paths.
+ * 3. Dependencies
+ *    - js/userService.js (User account retrieval and storage insertions)
+ *    - js/storage.js (Browser storage transactions wrapper)
+ * 4. Important Functions
+ *    - `signup(payload)`: Instantiates a user profile entry and sets the current session.
+ *    - `login(email, password)`: Validates credentials, sets user session, and updates view.
+ *    - `logout()`: Destroys user session markers and resets routing location to landing.
+ *    - `setSession(userId)`: Writes session meta configuration objects to Storage.
+ *    - `currentUser()`: Resolves logged-in user model or returns null context.
+ *    - `requireUser()`: Routing guard ensuring authenticated, onboarding-complete context.
+ * 5. Data Flow
+ *    - Form submit -> login/signup validation -> UserService write -> session registration in Storage -> Router redirections.
+ */
 
 import UserService from "./userService.js";
 import Storage from "./storage.js";
 
 const Auth = {
-  /*
-  Purpose: Creates a new user and logs them in by establishing a session.
-  Parameters: payload (Object) - User details for registration.
-  Returns: Object - The newly created user.
-  Side Effects: 
-    - Interacts with UserService to store the user in localStorage.
-    - Sets a session in localStorage.
-  */
+  
   signup(payload) {
     const user = UserService.createUser(payload);
     this.setSession(user.id);
     return user;
   },
 
-  /*
-  Purpose: Authenticates an existing user and establishes a session.
-  Parameters: 
-    - email (String): The user's email address.
-    - password (String): The user's password.
-  Returns: Object - The authenticated user.
-  Side Effects: 
-    - Reads from localStorage (via UserService).
-    - Sets a session in localStorage.
-  */
+  
   login(email, password) {
-    // Locate a user matching both email and password for rudimentary auth
     const user = UserService.getRawUsers().find((item) => item.email.toLowerCase() === email.toLowerCase() && item.password === password);
     if (!user) throw new Error("Invalid email or password.");
     this.setSession(user.id);
     return UserService.getUser(user.id);
   },
 
-  /*
-  Purpose: Logs the current user out and redirects to the landing page.
-  Parameters: None
-  Returns: undefined
-  Side Effects: 
-    - Removes the session from localStorage.
-    - Updates window.location.hash to redirect.
-  */
+  
   logout() {
     Storage.remove("session");
     location.hash = "#/";
   },
 
-  /*
-  Purpose: Establishes a user session in localStorage.
-  Parameters: userId (String) - The ID of the user to log in.
-  Returns: undefined
-  Side Effects: 
-    - Stores session data in localStorage.
-  */
+  
   setSession(userId) {
     Storage.set("session", { userId, startedAt: new Date().toISOString() });
   },
 
-  /*
-  Purpose: Retrieves the currently logged-in user from the active session.
-  Parameters: None
-  Returns: Object|null - The user object, or null if no active session.
-  Side Effects: Reads from localStorage.
-  */
+  
   currentUser() {
     const session = Storage.get("session");
     return session?.userId ? UserService.getUser(session.userId) : null;
   },
 
-  /*
-  Purpose: Ensures that a user is authenticated and has completed onboarding.
-        Acts as a route guard for protected views.
-  Parameters: None
-  Returns: Object|null - The current user object if valid, otherwise null.
-  Side Effects: 
-    - Redirects to login if unauthenticated.
-    - Redirects to onboarding if the user has not completed the flow.
-  */
+  
   requireUser() {
     const user = this.currentUser();
-    // Prevent unauthenticated users from accessing protected views.
     if (!user) {
       location.hash = "#/login";
       return null;
     }
-    // Prevent authenticated but incomplete users from accessing dashboard features.
     if (!user.onboardingComplete && location.hash !== "#/onboarding") {
       location.hash = "#/onboarding";
       return null;
