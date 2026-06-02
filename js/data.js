@@ -15,7 +15,10 @@
  *    - App load -> invokes `Data.initialize()` -> check `hb_initialized` in Storage -> write seed models if missing.
  */
 
-import Storage from "./storage.js";
+import UserRepository from "./userRepository.js";
+import TeamRepository from "./teamRepository.js";
+import RequestRepository from "./requestRepository.js";
+import NotificationRepository from "./notificationRepository.js";
 const skills = ["JavaScript", "React", "Python", "Django", "Flutter", "Figma", "Node.js", "TensorFlow", "Swift", "Product Strategy", "UX Research", "TypeScript"];
 const seedUsers = [
   {
@@ -132,16 +135,16 @@ const Data = {
   
   
   initialize() {
-    if (!Storage.get("initialized")) {
-      Storage.set("users", seedUsers);
-      Storage.set("teams", seedTeams);
-      Storage.set("requests", []);
-      Storage.set("notifications", []);
-      Storage.set("activities", [
-        { id: Storage.id("act"), type: "Team Created", text: "Orbit Labs started forming a team.", createdAt: new Date().toISOString() },
-        { id: Storage.id("act"), type: "Team Created", text: "Signal Sprint opened two roles.", createdAt: new Date().toISOString() }
+    if (!UserRepository.isInitialized()) {
+      UserRepository.saveAll(seedUsers);
+      TeamRepository.saveAll(seedTeams);
+      RequestRepository.saveAll([]);
+      NotificationRepository.saveNotifications([]);
+      NotificationRepository.saveActivities([
+        { id: NotificationRepository.generateId("act"), type: "Team Created", text: "Orbit Labs started forming a team.", createdAt: new Date().toISOString() },
+        { id: NotificationRepository.generateId("act"), type: "Team Created", text: "Signal Sprint opened two roles.", createdAt: new Date().toISOString() }
       ]);
-      Storage.set("initialized", true);
+      UserRepository.setInitialized(true);
     }
   }
 };

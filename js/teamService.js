@@ -21,19 +21,19 @@
  *    - Team creation -> gathers form parameters -> invokes service -> updates storage -> re-renders viewport.
  */
 
-import Storage from "./storage.js";
+import TeamRepository from "./teamRepository.js";
 import UserService from "./userService.js";
 import NotificationService from "./notificationService.js";
 
 const TeamService = {
   
   getTeams() {
-    return Storage.get("teams", []);
+    return TeamRepository.getAll();
   },
 
   
   saveTeams(teams) {
-    Storage.set("teams", teams);
+    TeamRepository.saveAll(teams);
   },
 
   
@@ -44,7 +44,7 @@ const TeamService = {
   
   createTeam(ownerId, payload) {
     const team = {
-      id: Storage.id("team"),
+      id: TeamRepository.generateId(),
       name: payload.name,
       goal: payload.goal,
       ownerId,

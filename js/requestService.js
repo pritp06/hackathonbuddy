@@ -23,7 +23,7 @@
  *    - Builder request -> target validation -> record creation -> LocalStorage write -> notification dispatch.
  */
 
-import Storage from "./storage.js";
+import RequestRepository from "./requestRepository.js";
 import UserService from "./userService.js";
 import TeamService from "./teamService.js";
 import NotificationService from "./notificationService.js";
@@ -31,12 +31,12 @@ import NotificationService from "./notificationService.js";
 const RequestService = {
   
   getRequests() {
-    return Storage.get("requests", []);
+    return RequestRepository.getAll();
   },
 
   
   saveRequests(requests) {
-    Storage.set("requests", requests);
+    RequestRepository.saveAll(requests);
   },
 
   
@@ -62,7 +62,7 @@ const RequestService = {
     if (fromUserId === toUserId) throw new Error("You cannot send a request to yourself.");
     
     const request = {
-      id: Storage.id("req"),
+      id: RequestRepository.generateId(),
       fromUserId,
       toUserId,
       teamId: target.type === "team" ? target.id : null,

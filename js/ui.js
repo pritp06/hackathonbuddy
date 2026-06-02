@@ -22,6 +22,7 @@
 
 import Auth from "./auth.js";
 import NotificationService from "./notificationService.js";
+import ThemeRepository from "./themeRepository.js";
 const icons = {
   dashboard: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>`,
   search: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
@@ -49,14 +50,14 @@ const UI = {
   // The theme is applied as a 'data-theme' attribute on the document HTML element to trigger
   // CSS variables transitions.
   theme() {
-    return localStorage.getItem("hb_theme") || "dark";
+    return ThemeRepository.getTheme();
   },
 
   
   applyTheme(theme) {
     const nextTheme = theme === "dark" ? "dark" : "light";
     document.documentElement.dataset.theme = nextTheme;
-    localStorage.setItem("hb_theme", nextTheme);
+    ThemeRepository.setTheme(nextTheme);
   },
 
   

@@ -19,39 +19,39 @@
  *    - Operations -> invoke create/addActivity -> save to LocalStorage collections -> dynamic pages query -> UI displays.
  */
 
-import Storage from "./storage.js";
+import NotificationRepository from "./notificationRepository.js";
 
 const NotificationService = {
   
   list(userId) {
-    return Storage.get("notifications", [])
+    return NotificationRepository.getNotifications()
       .filter((item) => !userId || item.userId === userId)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   },
 
   
   create(userId, type, text) {
-    const items = Storage.get("notifications", []);
-    const notification = { id: Storage.id("note"), userId, type, text, read: false, createdAt: new Date().toISOString() };
-    Storage.set("notifications", [notification, ...items]);
+    const items = NotificationRepository.getNotifications();
+    const notification = { id: NotificationRepository.generateId("note"), userId, type, text, read: false, createdAt: new Date().toISOString() };
+    NotificationRepository.saveNotifications([notification, ...items]);
     return notification;
   },
 
   
   markRead(id) {
-    const items = Storage.get("notifications", []).map((item) => (item.id === id ? { ...item, read: true } : item));
-    Storage.set("notifications", items);
+    const items = NotificationRepository.getNotifications().map((item) => (item.id === id ? { ...item, read: true } : item));
+    NotificationRepository.saveNotifications(items);
   },
 
   
   addActivity(type, text) {
-    const items = Storage.get("activities", []);
-    Storage.set("activities", [{ id: Storage.id("act"), type, text, createdAt: new Date().toISOString() }, ...items]);
+    const items = NotificationRepository.getActivities();
+    NotificationRepository.saveActivities([{ id: NotificationRepository.generateId("act"), type, text, createdAt: new Date().toISOString() }, ...items]);
   },
 
   
   activities() {
-    return Storage.get("activities", []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return NotificationRepository.getActivities().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
 };
 

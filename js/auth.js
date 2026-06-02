@@ -24,12 +24,12 @@
  */
 
 import UserService from "./userService.js";
-import Storage from "./storage.js";
+import UserRepository from "./userRepository.js";
 
 const Auth = {
-  
   signup(payload) {
     const user = UserService.createUser(payload);
+    UserService.clearOnboardingDraft();
     this.setSession(user.id);
     return user;
   },
@@ -38,24 +38,26 @@ const Auth = {
   login(email, password) {
     const user = UserService.getRawUsers().find((item) => item.email.toLowerCase() === email.toLowerCase() && item.password === password);
     if (!user) throw new Error("Invalid email or password.");
+    UserService.clearOnboardingDraft();
     this.setSession(user.id);
     return UserService.getUser(user.id);
   },
 
   
   logout() {
-    Storage.remove("session");
+    UserRepository.removeSession();
+    UserService.clearOnboardingDraft();
     location.hash = "#/";
   },
 
   
   setSession(userId) {
-    Storage.set("session", { userId, startedAt: new Date().toISOString() });
+    UserRepository.setSession({ userId, startedAt: new Date().toISOString() });
   },
 
   
   currentUser() {
-    const session = Storage.get("session");
+    const session = UserRepository.getSession();
     return session?.userId ? UserService.getUser(session.userId) : null;
   },
 

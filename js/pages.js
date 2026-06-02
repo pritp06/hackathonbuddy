@@ -34,7 +34,6 @@ import UserService from "./userService.js";
 import TeamService from "./teamService.js";
 import RequestService from "./requestService.js";
 import NotificationService from "./notificationService.js";
-import Storage from "./storage.js";
 
 
 const field = (label, name, type = "text", value = "", attrs = "") => `
@@ -259,8 +258,8 @@ const Pages = {
     const user = current();
     // Persisted in sessionStorage instead of localStorage so incomplete onboarding drafts
     // survive browser refreshes but do not overwrite master user profile states prematurely.
-    const draft = Storage.sessionGet("onboarding", user) || user;
-    const step = Number(Storage.sessionGet("onboardingStep", 1));
+    const draft = UserService.getOnboardingDraft(user) || user;
+    const step = Number(UserService.getOnboardingStep());
     const progress = Math.round((step / 8) * 100);
     const stepMarkup = {
       1: `${field("Full Name", "fullName", "text", draft.fullName, "required")}${field("Username", "username", "text", draft.username, "required")}${field("Email", "email", "email", draft.email, "required")}`,
@@ -460,7 +459,7 @@ const Pages = {
         if (action === "logout") Auth.logout();
         if (action === "toggle-menu") document.querySelector(".sidebar")?.classList.toggle("open");
         if (action === "toggle-marketing-menu") document.querySelector(".marketing-nav")?.classList.toggle("menu-open");
-        if (action === "onboarding-prev") { Storage.sessionSet("onboardingStep", Math.max(1, Number(Storage.sessionGet("onboardingStep", 1)) - 1)); location.reload(); }
+        if (action === "onboarding-prev") { UserService.setOnboardingStep(Math.max(1, Number(UserService.getOnboardingStep()) - 1)); location.reload(); }
         if (action === "save-builder") { UserService.saveBuilder(current().id, target.dataset.id); UI.toast("Builder saved."); location.reload(); }
         if (action === "save-team") { TeamService.saveTeam(current().id, target.dataset.id); UI.toast("Team saved."); location.reload(); }
         if (action === "request-builder") { const msg = prompt("Message for this builder", "I think our skills line up for a strong hackathon team."); if (msg !== null) { RequestService.sendRequest(current().id, { type: "builder", id: target.dataset.id }, msg); UI.toast("Request sent."); location.hash = "#/requests/sent"; } }
@@ -490,7 +489,7 @@ const Pages = {
           const data = UI.serialize(form);
           if (!Validation.email(data.email)) throw new Error("Enter a valid email.");
           Auth.signup(data);
-          Storage.sessionSet("onboardingStep", 1);
+          UserService.setOnboardingStep(1);
           location.hash = "#/onboarding";
         }
         if (form.id === "onboarding-form") Pages.submitOnboarding(form);
@@ -524,8 +523,8 @@ const Pages = {
   
   submitOnboarding(form) {
     const user = current();
-    const step = Number(Storage.sessionGet("onboardingStep", 1));
-    const draft = Storage.sessionGet("onboarding", user);
+    const step = Number(UserService.getOnboardingStep());
+    const draft = UserService.getOnboardingDraft(user);
     const data = UI.serialize(form);
     if (step === 1 && (!Validation.required(data.fullName) || !Validation.required(data.username) || !Validation.email(data.email))) throw new Error("Complete basic information with a valid email.");
     if (step === 3) {
@@ -543,16 +542,15 @@ const Pages = {
     const next = { ...draft, ...data };
     delete next.project1;
     delete next.project2;
-    Storage.sessionSet("onboarding", next);
+    UserService.setOnboardingDraft(next);
     if (step < 8) {
-      Storage.sessionSet("onboardingStep", step + 1);
+      UserService.setOnboardingStep(step + 1);
       location.reload();
       return;
     }
     if (!next.resume) throw new Error("A PDF resume is required.");
     UserService.completeOnboarding(user.id, next);
-    Storage.sessionRemove("onboarding");
-    Storage.sessionRemove("onboardingStep");
+    UserService.clearOnboardingDraft();
     UI.toast("Onboarding complete.");
     location.hash = "#/dashboard";
   },

@@ -22,7 +22,7 @@
  *    - Register: form values -> email/username unique checks -> add default object -> write to LocalStorage.
  */
 
-import Storage from "./storage.js";
+import UserRepository from "./userRepository.js";
 import NotificationService from "./notificationService.js";
 
 
@@ -34,17 +34,17 @@ const publicUser = (user) => {
 const UserService = {
   
   getUsers() {
-    return Storage.get("users", []).map(publicUser);
+    return UserRepository.getAll().map(publicUser);
   },
 
   
   getRawUsers() {
-    return Storage.get("users", []);
+    return UserRepository.getAll();
   },
 
   
   saveUsers(users) {
-    Storage.set("users", users);
+    UserRepository.saveAll(users);
   },
 
   
@@ -66,7 +66,7 @@ const UserService = {
     if (emailTaken) throw new Error("Email is already registered.");
     if (usernameTaken) throw new Error("Username is already taken.");
     const user = {
-      id: Storage.id("user"),
+      id: UserRepository.generateId(),
       fullName: payload.fullName,
       username: payload.username,
       email: payload.email,
@@ -124,6 +124,28 @@ const UserService = {
   removeSavedBuilder(currentUserId, builderId) {
     const user = this.getRawUser(currentUserId);
     return this.updateUser(currentUserId, { savedBuilders: (user.savedBuilders || []).filter((id) => id !== builderId) });
+  },
+
+  
+  getOnboardingDraft(user) {
+    return UserRepository.getOnboardingDraft(user);
+  },
+
+  setOnboardingDraft(draft) {
+    return UserRepository.setOnboardingDraft(draft);
+  },
+
+  getOnboardingStep() {
+    return UserRepository.getOnboardingStep();
+  },
+
+  setOnboardingStep(step) {
+    return UserRepository.setOnboardingStep(step);
+  },
+
+  clearOnboardingDraft() {
+    UserRepository.clearOnboardingDraft();
+    UserRepository.clearOnboardingStep();
   },
 
   
